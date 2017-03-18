@@ -1,0 +1,14 @@
+FROM ruby:2.3.3
+ENV DEBIAN_FRONTEND noninteractive
+RUN apt-get update -qq && \
+    apt-get install -y --no-install-recommends apt-utils && \
+    apt-get install -y build-essential libpq-dev nodejs vim && \
+    rm -rf /var/lib/apt/lists/*
+RUN mkdir /rails_with_postgresql
+WORKDIR /rails_with_postgresql
+ADD Gemfile /rails_with_postgresql/Gemfile
+ADD Gemfile.lock /rails_with_postgresql/Gemfile.lock
+RUN bundle install
+ADD . /rails_with_postgresql
+
+EXPOSE 3000:3000
